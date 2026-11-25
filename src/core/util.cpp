@@ -1,69 +1,87 @@
 #include "util.h"
-#include <cstring>
+#include <iostream>
 using namespace std;
 
-void make_lower_case(char* text)
+int clampInt(int val, int minVal, int maxVal)
+{
+if (val<minVal)
+{
+return minVal;
+}
+if (val>maxVal)
+{
+return maxVal;
+}
+return val;
+}
+
+void trimWhitespace(char* str)
+{
+if (str==0)
+{
+return;
+}
+int len=0;
+while (str[len]!='\0')
+{
+len+=1;
+}
+while (len>0 && (str[len-1]==' ' || str[len-1]=='\t' || str[len-1]=='\r' || str[len-1]=='\n'))
+{
+    str[len-1]='\0';
+    len-=1;
+}
+int start=0;
+while (str[start]==' ' || str[start]=='\t' || str[start]=='\r' || str[start]=='\n')
+{
+start+=1;
+}
+if (start>0)
 {
 int i=0;
-while (text[i]!='\0')
+while (str[start+i]!='\0')
 {
-if (text[i]>=65 && text[i]<=90)
+    str[i]=str[start+i];
+    i+=1;
+}
+str[i]='\0';
+}
+}
+
+bool stringEquals(const char* a, const char* b)
 {
-text[i]=text[i]+32;
+if (a==0 || b==0)
+{
+return false;
+}
+int i=0;
+while (a[i]!='\0' && b[i]!='\0')
+{
+if (a[i]!=b[i])
+{
+return false;
 }
 i+=1;
 }
-}
-int keep_in_range(int value, int low, int high)
-{
-if (value<low)
-{
-return low;
-}
-if (value>high)
-{
-return high;
-}
-return value;
-}
-bool extract_room_coords(const char* input, int* floor_out, int* room_out)
-{
-if (input==0)
-{
-return false;
-}
-if (strlen(input)!=5)
-{
-return false;
-}
-if (input[0]=='f' && input[2]=='-' && input[3]=='r')
-{
-int f=input[1]-'0';
-int r=input[4]-'0';
-if (f>=1 && f<=total_floors && r>=1 && r<=rooms_per_floor)
-{
-*floor_out=f;
-*room_out=r;
-return true;
-}
-}
-return false;
-}
-void add_item_to_bag(char inventory[][max_item_name], int* count, const char* item_name)
-{
-strncpy(inventory[*count], item_name, max_item_name - 1);
-inventory[*count][max_item_name - 1] = '\0';
-*count = *count + 1;
-}
-bool check_item_in_bag(const char inventory[][max_item_name], int count, const char* item_name)
-{
-int i;
-for (i=0; i<count; i++)
-{
-if (strcmp(inventory[i], item_name)==0)
+if (a[i]=='\0' && b[i]=='\0')
 {
 return true;
 }
-}
+else
+{
 return false;
+}
+}
+
+void printHeader(const char* title)
+{
+cout<<"========================================"<<endl;
+cout<<"  "<<title<<endl;
+cout<<"========================================"<<endl;
+}
+
+void clearScreen()
+{
+cout<<endl;
+cout<<"----------------------------------------"<<endl;
 }
