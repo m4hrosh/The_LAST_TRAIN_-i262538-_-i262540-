@@ -5,7 +5,7 @@ using namespace std;
 void make_lower_case(char* text)
 {
 int i=0;
-while (text[i]!='\0')
+while (text[i]>=65 && text[i]<=90)
 {
 if (text[i]>=65 && text[i]<=90)
 {
